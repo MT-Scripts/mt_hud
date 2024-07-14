@@ -1,7 +1,5 @@
-local Config = require 'config'
-local radioTalking = false
+local Config = lib.load('config')
 local PlayerVoiceMethod = false
-local showVoice = false
 local showingVehicleHUD = false
 local showingPlayerHUD = false
 local showingCompass = false
@@ -9,13 +7,13 @@ local showingCompass = false
 RegisterNuiCallback('hideFrame', function(data, cb)
     ShowNUI(data.name, false, false)
     cb(true)
-end) 
+end)
 
 ShowNUI = function(action, shouldShow, focus)
     SetNuiFocus(focus, focus)
     SendNUIMessage({ action = action, data = shouldShow })
 end
-  
+
 SendNUI = function(action, data)
     SendNUIMessage({ action = action, data = data })
 end
@@ -60,7 +58,7 @@ AddEventHandler("pma-voice:radioActive", function(radioTalking)
     PlayerVoiceMethod = radioTalking and 'radio' or false
 end)
 
-getPlayerVoiceMethod = function(player)
+local getPlayerVoiceMethod = function(player)
     if PlayerVoiceMethod ~= "radio" then
         if MumbleIsPlayerTalking(player) then
             PlayerVoiceMethod = "voice"
@@ -73,7 +71,7 @@ getPlayerVoiceMethod = function(player)
     return PlayerVoiceMethod
 end
 
-getHeadingText = function(heading)
+local getHeadingText = function(heading)
     if ((heading >= 0 and heading < 45) or (heading >= 315 and heading < 360)) then
         return "N"
     elseif (heading >= 45 and heading < 135) then
@@ -87,7 +85,7 @@ end
 
 local lastCrossroadUpdate = 0
 local lastCrossroadCheck = {}
-getCrossroads = function(vehicle)
+local getCrossroads = function(vehicle)
     local updateTick = GetGameTimer()
     if updateTick - lastCrossroadUpdate > 1500 then
         local pos = GetEntityCoords(vehicle)
@@ -102,11 +100,10 @@ CreateThread(function()
     while true do
         if not IsPauseMenuActive() and LocalPlayer.state.isLoggedIn then
             local stamina = 0
-            local staminaType = 'stamina'
             local PlayerData = Config.core.Functions.GetPlayerData()
             if not showingPlayerHUD then DisplayRadar(false) ShowNUI('setVisiblePlayer', true, false) showingPlayerHUD = true end
-            if not IsEntityInWater(cache.ped) then staminaType = 'stamina' stamina = (100 - GetPlayerSprintStaminaRemaining(cache.playerId)) end
-            if IsEntityInWater(cache.ped) then staminaType = 'oxygen' stamina = ((GetPlayerUnderwaterTimeRemaining(cache.playerId) * 10) - 300) end
+            if not IsEntityInWater(cache.ped) then stamina = (100 - GetPlayerSprintStaminaRemaining(cache.playerId)) end
+            if IsEntityInWater(cache.ped) then stamina = ((GetPlayerUnderwaterTimeRemaining(cache.playerId) * 10) - 300) end
             SendNUI('player', {
                 health = math.ceil(GetEntityHealth(cache.ped) - 100),
                 armor = math.ceil(GetPedArmour(cache.ped)),
@@ -128,7 +125,6 @@ CreateThread(function()
                     gear = GetVehicleCurrentGear(cache.vehicle),
                     speedType = Config.speedType
                 })
-                if not showingCompass then showCompass = true end
                 local crossroads = getCrossroads(cache.vehicle)
                 if not showingCompass then ShowNUI('setVisibleCompass', true, false) showingCompass = true end
                 SendNUI('compass', {
