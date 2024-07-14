@@ -13,6 +13,8 @@ Simple and clean FiveM HUD made in Typescript with React and Mantine
     - Speed
     - Gears
     - Compass
+    - Fuel
+    - Engine health
 - Easy colors change via config file
 - New minimap shape
 - Clear and optimized UI
