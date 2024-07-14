@@ -17,7 +17,7 @@ Simple and clean FiveM HUD made in Typescript with React and Mantine
     - Engine health
 - Easy colors change via config file
 - New minimap shape
-- Clear and optimized UI
+- Clean and optimized UI
 
 # Dependicies
 - qb-core or qbx_core
