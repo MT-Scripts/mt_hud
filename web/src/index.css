@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Digital-7';
+  src: url('./assets/fonts/digital-7.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+#root {
+  height: 100%
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+code {
+  font-family: sans-serif;
+}
